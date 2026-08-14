@@ -30,6 +30,7 @@ local_settings.py
 db.sqlite3
 /media
 /staticfiles
+.env
 
 # ML Models (large files - don't push)
 *.keras
