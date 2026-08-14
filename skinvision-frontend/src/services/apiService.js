@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const API_BASE_URL = 'http://localhost:8000/api'
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const API_URL = "https://skinvision-ewwr.onrender.com";
 
 export const predictSkinDisease = async (imageFile) => {
     const formData = new FormData()
@@ -9,7 +9,7 @@ export const predictSkinDisease = async (imageFile) => {
 
     try{
         const response = await axios.post(
-            `${API_BASE_URL}/predict/`,
+            `${API_URL}/api/predict/`,
             formData,
             {
                 headers:{
