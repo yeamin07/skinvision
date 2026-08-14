@@ -1,0 +1,2 @@
+web: gunicorn skinvision_api.wsgi:application
+release: python manage.py migrate
