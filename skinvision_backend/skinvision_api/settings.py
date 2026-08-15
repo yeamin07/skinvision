@@ -29,8 +29,8 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
-ALLOWED_HOSTS = ['*'] 
+DEBUG = True
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -49,7 +49,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,9 +62,7 @@ MIDDLEWARE = [
 #CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React dev server
-    "http://localhost:8000",
-    os.getenv('FRONTEND_URL','https://skinvision.onrender.com')
+    "http://localhost:3000",
 ]
 
 
@@ -156,14 +153,10 @@ USE_TZ = True
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
+STATIC_ROOT = BASE_DIR/'staticfiles'
 STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Ensure directories exist
-os.makedirs(MEDIA_ROOT, exist_ok=True)
-os.makedirs(STATIC_ROOT, exist_ok=True)
+
 
 
 

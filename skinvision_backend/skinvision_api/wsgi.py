@@ -11,6 +11,7 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'skinvision_api.settings')
+settings_module = 'skinvision_api.deployment_settings' if 'RENDER_EXTERNAL_HOSTNAME' in os.environ else 'skinvision_api.settings'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
 application = get_wsgi_application()
