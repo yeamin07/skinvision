@@ -3,8 +3,11 @@ import dj_database_url
 from .settings import *
 from .settings import BASE_DIR
 
-# Railway uses RAILWAY_PUBLIC_DOMAIN instead of RENDER_EXTERNAL_HOSTNAME
-ALLOWED_HOSTS = [os.environ.get('RAILWAY_PUBLIC_DOMAIN', 'localhost')]
+# NEW (hardcoded - works!)
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'https://skinvision-frontend-production.up.railway.app',
+]
 
 CSRF_TRUSTED_ORIGINS = ['https://'+os.environ.get('RAILWAY_PUBLIC_DOMAIN')]
 
