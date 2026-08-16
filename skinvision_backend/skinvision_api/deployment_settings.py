@@ -3,13 +3,16 @@ import dj_database_url
 from .settings import *
 from .settings import BASE_DIR
 
-# NEW (hardcoded - works!)
+# Hardcoded CORS (keep this only)
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'https://skinvision-frontend-production.up.railway.app',
 ]
 
-CSRF_TRUSTED_ORIGINS = ['https://'+os.environ.get('RAILWAY_PUBLIC_DOMAIN')]
+# Also fix CSRF_TRUSTED_ORIGINS (same issue)
+CSRF_TRUSTED_ORIGINS = [
+    'https://skinvision-backend-production.up.railway.app',
+]
 
 DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -26,11 +29,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# Use Railway frontend URL from environment variable
-CORS_ALLOWED_ORIGINS = [
-    'https://' + os.environ.get('RAILWAY_FRONTEND_DOMAIN', 'localhost:3000'),
-]
-
 STORAGES = {
     "default":{
         "BACKEND" : "django.core.files.storage.FileSystemStorage",
@@ -38,5 +36,4 @@ STORAGES = {
     "staticfiles": {
         "BACKEND" : "whitenoise.storage.CompressedStaticFilesStorage",
     },
-
 }
