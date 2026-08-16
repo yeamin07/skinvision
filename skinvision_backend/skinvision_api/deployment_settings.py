@@ -3,8 +3,10 @@ import dj_database_url
 from .settings import *
 from .settings import BASE_DIR
 
-ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
-CSRF_TRUSTED_ORIGINS = ['https://'+os.environ.get('RENDER_EXTERNAL_HOSTNAME')]
+# Railway uses RAILWAY_PUBLIC_DOMAIN instead of RENDER_EXTERNAL_HOSTNAME
+ALLOWED_HOSTS = [os.environ.get('RAILWAY_PUBLIC_DOMAIN', 'localhost')]
+
+CSRF_TRUSTED_ORIGINS = ['https://'+os.environ.get('RAILWAY_PUBLIC_DOMAIN')]
 
 DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -21,8 +23,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# Use Railway frontend URL from environment variable
 CORS_ALLOWED_ORIGINS = [
-    "'https://skinvision-frontend.railway.app'",
+    'https://' + os.environ.get('RAILWAY_FRONTEND_DOMAIN', 'localhost:3000'),
 ]
 
 STORAGES = {
