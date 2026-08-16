@@ -22,7 +22,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    "https://skinvision-frontend.onrender.com/",
+    "'https://skinvision-frontend.railway.app'",
 ]
 
 STORAGES = {
