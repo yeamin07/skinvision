@@ -109,6 +109,11 @@ from PIL import Image
 
 logger = logging.getLogger(__name__)
 
+# Define the exception class
+class InvalidImageError(Exception):
+    """Raised when image is invalid or cannot be processed"""
+    pass
+
 # Global variable to cache the model
 _model = None
 
@@ -118,7 +123,6 @@ def get_model():
     
     if _model is None:
         try:
-            # Import TensorFlow only when first needed
             import keras
             logger.info("Loading TensorFlow model...")
             _model = keras.models.load_model('path/to/your/model.h5')
@@ -132,18 +136,32 @@ def get_model():
 def predict_top_k(image_file, k=3):
     """Predict skin disease from image"""
     try:
+        # Validate image
+        if not image_file:
+            raise InvalidImageError("No image provided")
+        
         # Get the lazy-loaded model
         model = get_model()
         
         # Read and preprocess image
-        image = Image.open(io.BytesIO(image_file.read()))
-        image = image.resize((224, 224))
-        image_array = np.array(image) / 255.0
+        try:
+            image = Image.open(io.BytesIO(image_file.read()))
+        except Exception as e:
+            raise InvalidImageError(f"Invalid image format: {str(e)}")
         
-        # Handle both RGB and RGBA
-        if image_array.shape[2] == 4:
+        # Resize to model input size
+        image = image.resize((224, 224))
+        image_array = np.array(image, dtype=np.float32) / 255.0
+        
+        # Handle RGBA to RGB conversion
+        if len(image_array.shape) == 3 and image_array.shape[2] == 4:
             image_array = image_array[:, :, :3]
         
+        # Handle grayscale
+        if len(image_array.shape) == 2:
+            image_array = np.stack([image_array] * 3, axis=-1)
+        
+        # Expand batch dimension
         image_array = np.expand_dims(image_array, axis=0)
         
         # Make prediction
@@ -155,7 +173,7 @@ def predict_top_k(image_file, k=3):
         
         results = [
             {
-                'class': class_config.CLASS_NAMES[idx],
+                'class': class_config.CLASS_NAMES[int(idx)],
                 'confidence': float(predictions[0][idx])
             }
             for idx in top_k_indices
@@ -163,10 +181,9 @@ def predict_top_k(image_file, k=3):
         
         return results
         
-    except InvalidImageError as e:
-        raise InvalidImageError(str(e))
+    except InvalidImageError:
+        raise
     except Exception as e:
         logger.exception("Prediction error")
         raise RuntimeError(f"Model inference failed: {str(e)}")
-
 
