@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'diagnosis',
+    'skinvision_api'
 ]
 
 MIDDLEWARE = [
