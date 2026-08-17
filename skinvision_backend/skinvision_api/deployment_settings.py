@@ -2,10 +2,8 @@ import os
 from .settings import *
 
 # Hardcoded for Railway (NO environment variables!)
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'https://skinvision-frontend-production.up.railway.app',
-]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
 
 CSRF_TRUSTED_ORIGINS = [
     'https://skinvision-backend-production.up.railway.app',
@@ -14,7 +12,6 @@ CSRF_TRUSTED_ORIGINS = [
 DEBUG = False
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
-ALLOWED_HOSTS = ['skinvision-backend-production.up.railway.app', 'localhost', '127.0.0.1']
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
