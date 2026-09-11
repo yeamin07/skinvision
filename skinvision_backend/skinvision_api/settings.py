@@ -29,13 +29,14 @@ SECRET_KEY = 'l!=wu*g853tsnvm_(kopyd4bj&oj1=_xn+3n28x5xzgv$u*8a2'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = [
-    'skinvision-backend-production.up.railway.app',
-    'localhost',
-    '127.0.0.1',
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+# ALLOWED_HOSTS = [
+#     'skinvision-backend-production.up.railway.app',
+#     'localhost',
+#     '127.0.0.1',
 
-]
+# ]
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 
 # Application definition
@@ -67,9 +68,10 @@ MIDDLEWARE = [
 # Dev only — lock this down to specific origins before deploying
 #CORS_ALLOW_ALL_ORIGINS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",
+# ]
+CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000').split(',')
 
 
 CORS_ALLOW_CREDENTIALS = True
